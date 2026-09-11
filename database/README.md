@@ -1,0 +1,1 @@
+This folder contains PostgreSQL scripts, ER diagrams, table creation scripts, and sample data.

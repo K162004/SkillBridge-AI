@@ -1,0 +1,1 @@
+This folder contains the Spring Boot backend including authentication, user management, dashboard APIs, and admin services.

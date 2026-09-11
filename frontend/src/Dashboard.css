@@ -1,0 +1,121 @@
+.dashboard {
+
+padding:40px;
+
+background:#f5f7fb;
+
+min-height:100vh;
+
+}
+
+
+.heading {
+
+color:#666;
+
+margin-bottom:30px;
+
+}
+
+
+.cards {
+
+display:grid;
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:25px;
+
+}
+
+
+
+.card {
+
+background:white;
+
+padding:25px;
+
+border-radius:15px;
+
+box-shadow:
+0 10px 25px rgba(0,0,0,0.08);
+
+}
+
+
+.score-card h1 {
+
+font-size:50px;
+
+color:#667eea;
+
+}
+
+
+
+.skills span,
+.missing span {
+
+display:inline-block;
+
+padding:8px 15px;
+
+border-radius:20px;
+
+margin:5px;
+
+background:#e8edff;
+
+}
+
+
+
+.missing span {
+
+background:#ffe5e5;
+
+color:red;
+
+}
+
+
+
+.roadmap {
+
+margin-top:35px;
+
+background:white;
+
+padding:30px;
+
+border-radius:15px;
+
+}
+
+
+
+.timeline {
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:25px;
+
+}
+
+
+
+.timeline div {
+
+padding:20px;
+
+background:#f0f3ff;
+
+border-radius:12px;
+
+width:22%;
+
+}

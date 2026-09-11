@@ -1,0 +1,1 @@
+This folder contains architecture diagrams, workflow diagrams, ER diagrams, and UI flow diagrams.

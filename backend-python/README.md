@@ -1,0 +1,1 @@
+This folder contains the FastAPI backend, AI modules, resume parser, ATS score engine, skill gap analysis, and AI Career Mentor chatbot.
