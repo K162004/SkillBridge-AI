@@ -1,7 +1,44 @@
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  return <Dashboard />;
+  return (
+    <BrowserRouter>
+      <Routes>
+
+        {/* Default route */}
+        <Route
+          path="/"
+          element={<Navigate to="/login" replace />}
+        />
+
+        {/* Authentication */}
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+
+        {/* Protected SkillBridge dashboard */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;

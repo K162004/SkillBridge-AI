@@ -1,81 +1,85 @@
 import os
+import time
 from dotenv import load_dotenv
-import google.generativeai as genai
+from google import genai
 
 load_dotenv()
 
-print("Gemini API key loaded:", bool(os.getenv("GEMINI_API_KEY")))
+api_key = os.getenv("GEMINI_API_KEY")
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+print("Gemini API key loaded:", bool(api_key))
 
-model = genai.GenerativeModel("gemini-3.5-flash")
+client = genai.Client(api_key=api_key)
+
+
+# Models available to your API key.
+# If one is temporarily busy, the next model will be tried.
+GEMINI_MODELS = [
+    "gemini-flash-lite-latest",
+    "gemini-3.5-flash-lite",
+    "gemini-3.8-flash",
+    "gemini-3.7-flash",
+    "gemini-3.6-flash",
+    "gemini-3.5-flash",
+    "gemini-flash-latest",
+    "gemini-2.5-flash",
+]
 
 
 def generate_career_response(message):
+
     prompt = f"""
 You are SkillBridge AI, an AI Career Mentor.
 
 Give practical, structured and beginner-friendly career guidance.
 
+Answer the user's actual question directly.
+Do not give a generic AI Engineer roadmap unless the user specifically asks for one.
+
 User Question:
 {message}
 
-Format your answer with:
+Format your answer with relevant sections when appropriate:
 1. Career Guidance
 2. Skills Required
 3. Learning Roadmap
 4. Projects to Build
 5. Interview Tips
 
-Keep the response clear and professional.
+Only include sections that are relevant to the user's question.
+
+Keep the response clear, professional and useful for a student or fresher.
 """
 
-    try:
-        response = model.generate_content(prompt)
-        return response.text
+    last_error = None
 
-    except Exception as e:
+    for model_name in GEMINI_MODELS:
 
-        # Gemini quota exceeded
-        if "429" in str(e):
-            return """
-🤖 Gemini API is temporarily busy.
+        try:
+            print(f"Trying Gemini model: {model_name}")
 
-Here is your AI Engineer Roadmap:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt
+            )
 
-📅 Month 1
-• Python
-• SQL
-• Git
+            if response.text:
+                print(f"Gemini response received from: {model_name}")
+                return response.text
 
-📅 Month 2
-• Statistics
-• NumPy
-• Pandas
-• Data Visualization
+        except Exception as e:
 
-📅 Month 3
-• Machine Learning
-• Scikit-learn
-• Model Evaluation
+            last_error = e
+            print(f"Gemini model failed: {model_name}")
+            print(f"Error: {str(e)}")
 
-📅 Month 4
-• Deep Learning
-• TensorFlow or PyTorch
+            # Try the next available model
+            time.sleep(1)
 
-📅 Month 5
-• FastAPI
-• Docker
-• REST APIs
+    print("All Gemini models failed.")
+    print(f"Last Gemini error: {last_error}")
 
-📅 Month 6
-• Generative AI
-• LangChain
-• RAG
-• Build 3 end-to-end AI projects
-
-💡 Tip:
-Maintain a strong GitHub portfolio and practice coding interviews regularly.
-"""
-
-        return f"❌ Error communicating with Gemini API: {e}"
+    return (
+        "I'm temporarily unable to connect to the AI service. "
+        "Please try your question again in a moment."
+    )
